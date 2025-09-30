@@ -6,6 +6,22 @@ use App\Models\ApiLog;
 use Illuminate\Support\Facades\Auth;
 class Permission
 {
+    public static function FormValidator($rules, $post)
+    {
+        $validator = \Validator::make($post->all(), array_reverse($rules));
+        if ($validator->fails()) {
+            foreach ($validator->errors()->messages() as $key => $value) {
+                $error = $value[0];
+            }
+            return response()->json(array(
+                'status'     => 'ERR',
+                'statuscode' => 'ERR',
+                'message'    => $error
+            ));
+        }else{
+            return "no";
+        }
+    }
 
     public static function curl($url, $method = 'POST', $parameters, $header, $log = "no", $modal = "none", $txnid = "none")
     {
@@ -41,8 +57,7 @@ class Permission
                ApiLog::create($log);
         }
         return ["response" => $response, "error" => $err, 'code' => $code];
-    } 
-    
+    }    
 
     public static function generateRequestId()
     {

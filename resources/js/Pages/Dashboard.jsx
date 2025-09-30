@@ -1,70 +1,55 @@
 "use client"
 
-import { useState } from "react"
-import { Sidebar } from "@/components/sidebar"
-import { Header } from "@/components/header" 
-import { DashboardContent } from "@/components/dashboard-content" 
-import { ServicesContent } from "./services-content" 
-import { PayoutContent } from "./payout-content" 
-import { RechargeContent } from "./recharge-content" 
-import { BusBookingContent } from "./bus-booking-content" 
-import { CMSAirtelContent } from "./cms-airtel-content" 
-import { ElectricityContent } from "./electricity-content" 
-import { InsuranceContent } from "./insurance-content" 
-import { FastagContent } from "./fastag-content" 
-import { LPGContent } from "./lpg-content" 
-import { MunicipalityContent } from "./municipality-content" 
-import { StatusContent } from "./status-content" 
+import { motion } from "framer-motion"
+import { KPICards } from "@/components/kpi-cards"
+import { FinancialChart } from "@/components/financial-chart"
+import { SalesDistribution } from "@/components/sales-distribution"
+import { TrafficSources } from "@/components/traffic-sources"
+import { VisitorStats } from "@/components/visitor-stats"
+import Layout from "@/components/layout"
+import { Head } from "@inertiajs/react"
 
-export default function AdminDashboard() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [activePage, setActivePage] = useState("dashboard")
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
 
-  const renderContent = () => {
-    switch (activePage) {
-      case "dashboard":
-        return <DashboardContent />
-      case "services":
-        return <ServicesContent />
-      case "payout":
-        return <PayoutContent />
-      case "recharge":
-        return <RechargeContent />
-      case "bus-booking":
-        return <BusBookingContent />
-      case "cms-airtel":
-        return <CMSAirtelContent />
-      case "electricity":
-        return <ElectricityContent />
-      case "insurance":
-        return <InsuranceContent />
-      case "fastag":
-        return <FastagContent />
-      case "lpg":
-        return <LPGContent />
-      case "municipality":
-        return <MunicipalityContent />
-      case "status":
-        return <StatusContent />
-      default:
-        return <DashboardContent />
-    }
-  }
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+}
 
+export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-background dark">
-      <div className="flex">
-        <Sidebar
-          collapsed={sidebarCollapsed}
-          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-          activePage={activePage}
-          onPageChange={setActivePage}
-        />
-        <div className="flex-1 flex flex-col">
-          <Header />
-          <main className="flex-1 p-6">{renderContent()}</main>
-        </div>
+    <Layout title="Dashboard">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
+      <motion.div variants={itemVariants}>
+        <KPICards />
+      </motion.div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <motion.div variants={itemVariants}>
+          <FinancialChart />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <VisitorStats />
+        </motion.div>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <motion.div variants={itemVariants}>
+          <SalesDistribution />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <TrafficSources />
+        </motion.div>
+      </div>
+    </motion.div>
+    </Layout>
   )
 }

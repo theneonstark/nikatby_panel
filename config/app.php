@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -122,5 +124,16 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'aliases' => Facade::defaultAliases()->merge([
+        // 'ExampleClass' => App\Example\ExampleClass::class,
+        
+        'Myhelper' => App\Helpers\Permission::class,
+        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        // 'Paytm' => App\Helpers\Paytm::class,
+        // 'LogActivity' => App\Helpers\LogActivity::class,
+        'CJS' => App\Helpers\CryptoJsAes::class,
+        // 'Payout' => App\Helpers\Payout::class,
+    ])->toArray(),
 
 ];

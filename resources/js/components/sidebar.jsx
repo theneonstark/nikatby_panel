@@ -20,10 +20,11 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Link } from "@inertiajs/react"
 
 const menuItems = [
   { icon: Home, label: "Dashboard", href: "/", key: "dashboard" },
-  { icon: Settings, label: "Services", href: "/services", key: "services" },
+  { icon: Settings, label: "BBPS Service", href: "/bbps/services", key: "services" },
   { icon: CreditCard, label: "Payout", href: "/payout", key: "payout" },
   { icon: Zap, label: "Recharge", href: "/recharge", key: "recharge" },
   {
@@ -104,7 +105,8 @@ export function Sidebar({ collapsed, onToggle, activePage, onPageChange }) {
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => (
           <div key={item.label}>
-            <Button
+            <Link href={item.href}>
+              <Button
               variant="ghost"
               className={cn(
                 "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -136,6 +138,7 @@ export function Sidebar({ collapsed, onToggle, activePage, onPageChange }) {
                 </motion.div>
               )}
             </Button>
+            </Link>
 
             <AnimatePresence>
               {item.submenu && expandedItems.includes(item.label) && !collapsed && (
