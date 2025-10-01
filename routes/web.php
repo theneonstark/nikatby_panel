@@ -27,13 +27,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'bbps'], function () {
         Route::get('/services', [BbpsController::class, 'services']);
-        Route::get('/service/{category}', [BbpsController::class, 'getAllOperator'])
-            ->where('category', '.*');
+        Route::get('/service/{category}', [BbpsController::class, 'getAllOperator']);
+        Route::post('/biller', [BbpsController::class, 'billerId']);
+        Route::post('/fetchbill', [BbpsController::class, 'fetchBill']);
+    
 
 
     //     Route::get('/billerInfo', [BbpsController::class, 'billerInfo']);
-    // Route::match(['get', 'post'],'/biller/{biller}', [BbpsController::class, 'billerId']);
-    // Route::match(['get', 'post'],'/fetchbill', [BbpsController::class, 'fetchBill']);
     // Route::get('/fetchbill/details', [BbpsController::class, 'fetchBillDetails']);
     
     

@@ -1,20 +1,15 @@
+import { LoanCategory } from "@/components/bbps_category/loan";
 import { usePage } from "@inertiajs/react";
 import React from "react";
 
-export default function CategoryDetail({ category, services, hasStates, states }) {
+export default function CategoryDetail({ category, services, hasStates }) {
   const renderLayout = () => {
     const { url } = usePage(); // pura url aata hai
   const category = decodeURIComponent(url.split("/").pop()); // last part pick karo
     switch (category) {
-      case "Electricity":
+      case "Loan Repayment":
         return (
-          <div className="p-6 bg-yellow-50 rounded-xl shadow">
-            <h2 className="text-2xl font-bold mb-4">Pay Electricity Bills</h2>
-            
-            <ul className="mt-4">
-              
-            </ul>
-          </div>
+          <LoanCategory list={services}/>
         );
 
       case "Water":

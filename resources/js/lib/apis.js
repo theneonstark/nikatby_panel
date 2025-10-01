@@ -31,3 +31,23 @@ export const logout = async() =>{
         throw Err;
     }
 }
+
+export const fetchBiller = async(data) => {
+    try{
+        const res = await axios.post('/bbps/biller', data)
+        return res;
+    }catch(err){
+        console.error('Something went wrong for fetching bill details',err);
+        throw err;        
+    }
+}
+
+export const fetchPayableAmount = async (data) => {
+    try {
+      const response = await axios.post(`/bbps/fetchbill`, data);
+      return response;
+    } catch (error) {
+      console.error('Error fetching bill:', error);
+      throw error;
+    }
+};

@@ -128,7 +128,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         
-        'Myhelper' => App\Helpers\Permission::class,
+        'MyHelper' => App\Helpers\Permission::class,
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         // 'Paytm' => App\Helpers\Paytm::class,
         // 'LogActivity' => App\Helpers\LogActivity::class,
