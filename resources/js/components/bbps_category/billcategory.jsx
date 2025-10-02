@@ -129,6 +129,11 @@ export default function BillCategory({ list, title }) {
           onConfirmPay={handlePayment}
         />
       </motion.div>
+      <div className='flex items-center justify-center gap-2 opacity-70 mt-4'>
+          <img src="/company/logo.png" alt="" className='w-20 h-full'/>
+          <p className='text-xl text-gray-500 font-extralight'>|</p>
+          <img src="/company/bharatconnect.png" alt="" className='w-16 h-full'/>
+        </div>
     </Layout>
   )
 }
