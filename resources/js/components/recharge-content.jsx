@@ -32,10 +32,10 @@ export function RechargeContent() {
     >
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Recharge Services</h1>
-        <p className="text-muted-foreground">Mobile, DTH, and data card recharge services</p>
+        <p className="text-muted-foreground">Mobile</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {rechargeTypes.map((type, index) => (
           <motion.div
             key={type.title}
@@ -52,21 +52,21 @@ export function RechargeContent() {
             </Card>
           </motion.div>
         ))}
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Quick Recharge</CardTitle>
-            <CardDescription>Recharge mobile, DTH, or data card</CardDescription>
+            <CardDescription>Recharge mobile</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="mobile" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
+              {/* <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="mobile">Mobile</TabsTrigger>
                 <TabsTrigger value="dth">DTH</TabsTrigger>
                 <TabsTrigger value="data">Data Card</TabsTrigger>
-              </TabsList>
+              </TabsList> */}
               <TabsContent value="mobile" className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="mobile">Mobile Number</Label>
@@ -87,22 +87,12 @@ export function RechargeContent() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="amount">Amount</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select amount" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="10">$10</SelectItem>
-                      <SelectItem value="20">$20</SelectItem>
-                      <SelectItem value="30">$30</SelectItem>
-                      <SelectItem value="50">$50</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="dth-amount">Amount</Label>
+                  <Input id="dth-amount" placeholder="Enter amount" />
                 </div>
                 <Button className="w-full">Recharge Now</Button>
               </TabsContent>
-              <TabsContent value="dth" className="space-y-4">
+              {/* <TabsContent value="dth" className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="subscriber">Subscriber ID</Label>
                   <Input id="subscriber" placeholder="Enter subscriber ID" />
@@ -126,8 +116,8 @@ export function RechargeContent() {
                   <Input id="dth-amount" placeholder="Enter amount" />
                 </div>
                 <Button className="w-full">Recharge Now</Button>
-              </TabsContent>
-              <TabsContent value="data" className="space-y-4">
+              </TabsContent> */}
+              {/* <TabsContent value="data" className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="data-number">Data Card Number</Label>
                   <Input id="data-number" placeholder="Enter data card number" />
@@ -150,7 +140,7 @@ export function RechargeContent() {
                   <Input id="data-amount" placeholder="Enter amount" />
                 </div>
                 <Button className="w-full">Recharge Now</Button>
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           </CardContent>
         </Card>
