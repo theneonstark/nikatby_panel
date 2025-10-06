@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Service\Paysprint;
 
 // namespace Firebase\JWT;
+
+use App\Http\Controllers\Controller;
 use \DomainException;
 use \InvalidArgumentException;
 use \UnexpectedValueException;
@@ -21,7 +23,7 @@ use \DateTime;
  * @license  http://opensource.org/licenses/BSD-3-Clause 3-clause BSD
  * @link     https://github.com/firebase/php-jwt
  */
-class JwtController extends Controller{
+class JwtController{
 
     /**
      * When checking nbf, iat or expiration times,

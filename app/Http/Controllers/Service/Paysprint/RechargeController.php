@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Service\Paysprint;
 
-use App\Http\Controllers\JwtController;
 use App\Models\ApiManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -41,7 +40,6 @@ class RechargeController
         try {
             //to get api response from db 
             $apiDetails = ApiManagement::where('api_name', $apiName)->first();
-            dd($apiDetails);
 
             if (!$apiDetails) {
                 throw new \Exception("API not found for name: {$apiName}");
@@ -59,19 +57,23 @@ class RechargeController
                 'User-Agent' => $this->partnerId
             ], $additionalHeaders);
 
+            // Step 4: Prepare payload
+            $payloadJson = json_encode($payload);
+
             // Make the API call
-            $response = Http::withHeaders($headers)
-                ->post($apiDetails->api_url, $payload);
+            $response = \MyHelper::curl($apiDetails->api_url, "POST", $payloadJson, $headers, 'no');
+
+            dd($response['response']);
 
             // Log the API call
-            Log::info('Dynamic API Call', [
-                'api_name' => $apiName,
-                'url' => $apiDetails->api_url,
-                'payload' => $payload,
-                'response' => $response->json()
-            ]);
+            // Log::info('Dynamic API Call', [
+            //     'api_name' => $apiName,
+            //     'url' => $apiDetails->api_url,
+            //     'payload' => $payload,
+            //     'response' => $response->json()
+            // ]);
 
-            return $response->json();
+            // return $response['response']->json();
         } catch (\Exception $e) {
             Log::error('Dynamic API Call Failed', [
                 'api_name' => $apiName,
@@ -82,6 +84,28 @@ class RechargeController
                 'status' => false,
                 'message' => 'API call failed: ' . $e->getMessage()
             ];
+        }
+    }
+
+    public function getOperators()
+    {
+        try {
+            // Call the GetOperator API dynamically
+            $responseData = $this->callDynamicApi('GetOperator');
+
+            // Save to database if the API call is successful
+            // if (isset($responseData['status']) && $responseData['status'] === true) {
+            //     $this->saveOperatorsToDatabase($responseData['data']);
+            // }
+
+            return response()->json($responseData);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch operators: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch operators: ' . $e->getMessage()
+            ], 500);
         }
     }
 

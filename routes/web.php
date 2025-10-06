@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'recharge'], function () {
         Route::get('/', [RechargeController::class, 'index']);
+        Route::get('/operator', [RechargeController::class, 'getOperators']);
         Route::post('/dorecharge', [RechargeController::class, 'dorecharge']);
     });
 });

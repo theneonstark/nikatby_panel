@@ -52,3 +52,12 @@ export const fetchPayableAmount = async (data) => {
     }
 };
 
+export const getOperators = async () => {
+    try{
+        const res = await axios.get('/recharge/operator');
+        return res;
+    }catch(err){
+        console.error('Something went wrong for fetch operator', err)
+        throw err;
+    }
+}
