@@ -10,8 +10,7 @@ export default function Recharge() {
     const fetchOperator = async () => {
       try {
         const operator = await getOperators()
-        console.log("Operators:", operator)
-        setOperators(operator)
+        setOperators(operator?.data?.data?.data)
       } catch (error) {
         console.error("Error fetching operators:", error)
       }

@@ -9,12 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Smartphone, Tv, Wifi, Zap } from "lucide-react"
 
-const rechargeTypes = [
-  { icon: Smartphone, title: "Mobile Recharge", description: "Prepaid mobile recharge" },
-  { icon: Tv, title: "DTH Recharge", description: "Direct-to-home TV recharge" },
-  { icon: Wifi, title: "Data Card", description: "Internet data card recharge" },
-  { icon: Zap, title: "Postpaid", description: "Postpaid bill payment" },
-]
+// const rechargeTypes = [
+//   { icon: Smartphone, title: "Mobile Recharge", description: "Prepaid mobile recharge" },
+//   { icon: Tv, title: "DTH Recharge", description: "Direct-to-home TV recharge" },
+//   { icon: Wifi, title: "Data Card", description: "Internet data card recharge" },
+//   { icon: Zap, title: "Postpaid", description: "Postpaid bill payment" },
+// ]
 
 const recentRecharges = [
   { number: "9876543210", operator: "Airtel", amount: "$25", status: "Success", date: "2024-01-15" },
@@ -22,7 +22,7 @@ const recentRecharges = [
   { number: "9876543212", operator: "Vi", amount: "$20", status: "Failed", date: "2024-01-13" },
 ]
 
-export function RechargeContent() {
+export function RechargeContent({operators}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -79,10 +79,17 @@ export function RechargeContent() {
                       <SelectValue placeholder="Select operator" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="airtel">Airtel</SelectItem>
-                      <SelectItem value="jio">Jio</SelectItem>
-                      <SelectItem value="vi">Vi</SelectItem>
-                      <SelectItem value="bsnl">BSNL</SelectItem>
+                      {operators && operators.length > 0 ? (
+                        operators.map((op) => (
+                          <SelectItem key={op.id} value={op.id}>
+                            {op.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <div className="text-center py-2 text-sm text-muted-foreground">
+                          No operators found
+                        </div>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
