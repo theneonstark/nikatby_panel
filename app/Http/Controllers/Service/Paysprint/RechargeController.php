@@ -38,42 +38,42 @@ class RechargeController
     private function callDynamicApi($apiName, $payload = [], $additionalHeaders = [])
     {
         try {
-            //to get api response from db 
+            // 1️⃣ Fetch API details
             $apiDetails = ApiManagement::where('api_name', $apiName)->first();
 
             if (!$apiDetails) {
                 throw new \Exception("API not found for name: {$apiName}");
             }
 
-            // Generate unique request ID and JWT token
+            // 2️⃣ Generate unique request ID and JWT token
             $requestId = time() . rand(1000, 9999);
             $jwtToken = $this->generateJwtToken($requestId);
 
-            // Prepare headers
-            $headers = array_merge([
-                'Token' => $jwtToken,
-                'accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'User-Agent' => $this->partnerId
-            ], $additionalHeaders);
+            // 3️⃣ Prepare headers
+            $headers = [
+                'Token: ' . $jwtToken,
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'User-Agent: ' . $this->partnerId
+            ];
 
-            // Step 4: Prepare payload
+            // Merge additional headers (if any)
+            foreach ($additionalHeaders as $key => $value) {
+                $headers[] = "{$key}: {$value}";
+            }
+
+            // 4️⃣ Prepare payload (JSON)
             $payloadJson = json_encode($payload);
 
-            // Make the API call
-            $response = \MyHelper::curl($apiDetails->api_url, "POST", $payloadJson, $headers, 'no');
+            // 5️⃣ Call your helper CURL
+            $response = \MyHelper::curl($apiDetails->api_url, 'POST', $payloadJson, $headers, 'no');
 
-            dd($response['response']);
-
-            // Log the API call
-            // Log::info('Dynamic API Call', [
-            //     'api_name' => $apiName,
-            //     'url' => $apiDetails->api_url,
-            //     'payload' => $payload,
-            //     'response' => $response->json()
-            // ]);
-
-            // return $response['response']->json();
+            // 6️⃣ Decode and return response
+            return [
+                'status' => true,
+                'data' => json_decode($response['response'], true),
+                'http_code' => $response['code']
+            ];
         } catch (\Exception $e) {
             Log::error('Dynamic API Call Failed', [
                 'api_name' => $apiName,
@@ -87,6 +87,7 @@ class RechargeController
         }
     }
 
+
     public function getOperators()
     {
         try {
@@ -99,7 +100,6 @@ class RechargeController
             // }
 
             return response()->json($responseData);
-
         } catch (\Exception $e) {
             Log::error('Failed to fetch operators: ' . $e->getMessage());
             return response()->json([
