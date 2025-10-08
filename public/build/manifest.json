@@ -1,120 +1,112 @@
 {
-  "_apis-CSkXTLdj.js": {
-    "file": "assets/apis-CSkXTLdj.js",
-    "name": "apis"
+  "_apis-BzeLdW_T.js": {
+    "file": "assets/apis-BzeLdW_T.js",
+    "name": "apis",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
   },
-  "_card-DmfCpCqM.js": {
-    "file": "assets/card-DmfCpCqM.js",
+  "_card-CudBIojk.js": {
+    "file": "assets/card-CudBIojk.js",
     "name": "card",
     "imports": [
       "resources/js/app.jsx",
-      "_label-CgpcxaxB.js"
+      "_apis-BzeLdW_T.js"
     ]
   },
-  "_createLucideIcon-zfhJLSHP.js": {
-    "file": "assets/createLucideIcon-zfhJLSHP.js",
+  "_createLucideIcon-BrM2DDzr.js": {
+    "file": "assets/createLucideIcon-BrM2DDzr.js",
     "name": "createLucideIcon",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_label-CgpcxaxB.js": {
-    "file": "assets/label-CgpcxaxB.js",
-    "name": "label",
-    "imports": [
-      "resources/js/app.jsx"
-    ]
-  },
-  "_layout-DWUCAO5c.js": {
-    "file": "assets/layout-DWUCAO5c.js",
+  "_layout-BRksI4cZ.js": {
+    "file": "assets/layout-BRksI4cZ.js",
     "name": "layout",
     "imports": [
       "resources/js/app.jsx",
-      "_label-CgpcxaxB.js",
-      "_createLucideIcon-zfhJLSHP.js",
-      "_card-DmfCpCqM.js"
+      "_apis-BzeLdW_T.js",
+      "_createLucideIcon-BrM2DDzr.js",
+      "_card-CudBIojk.js"
     ]
   },
   "resources/js/Pages/Auth/login.jsx": {
-    "file": "assets/login-BFkuTj0Z.js",
+    "file": "assets/login-CVvW-usX.js",
     "name": "login",
     "src": "resources/js/Pages/Auth/login.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_label-CgpcxaxB.js",
-      "_card-DmfCpCqM.js",
-      "_apis-CSkXTLdj.js"
+      "_apis-BzeLdW_T.js",
+      "_card-CudBIojk.js"
     ]
   },
   "resources/js/Pages/Auth/signup.jsx": {
-    "file": "assets/signup-C5dqtkby.js",
+    "file": "assets/signup-CtZyGv0-.js",
     "name": "signup",
     "src": "resources/js/Pages/Auth/signup.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_label-CgpcxaxB.js",
-      "_apis-CSkXTLdj.js",
-      "_createLucideIcon-zfhJLSHP.js"
+      "_apis-BzeLdW_T.js",
+      "_createLucideIcon-BrM2DDzr.js"
     ]
   },
   "resources/js/Pages/BBPS/category.jsx": {
-    "file": "assets/category-BuFI-6ow.js",
+    "file": "assets/category-N9TI69iL.js",
     "name": "category",
     "src": "resources/js/Pages/BBPS/category.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-DWUCAO5c.js",
-      "_apis-CSkXTLdj.js",
-      "_label-CgpcxaxB.js",
-      "_createLucideIcon-zfhJLSHP.js",
-      "_card-DmfCpCqM.js"
+      "_layout-BRksI4cZ.js",
+      "_apis-BzeLdW_T.js",
+      "_createLucideIcon-BrM2DDzr.js",
+      "_card-CudBIojk.js"
     ]
   },
   "resources/js/Pages/BBPS/services.jsx": {
-    "file": "assets/services-DAWhDv-x.js",
+    "file": "assets/services-NdqOPLTk.js",
     "name": "services",
     "src": "resources/js/Pages/BBPS/services.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-DWUCAO5c.js",
-      "_card-DmfCpCqM.js",
-      "_label-CgpcxaxB.js",
-      "_createLucideIcon-zfhJLSHP.js"
+      "_layout-BRksI4cZ.js",
+      "_card-CudBIojk.js",
+      "_apis-BzeLdW_T.js",
+      "_createLucideIcon-BrM2DDzr.js"
     ]
   },
   "resources/js/Pages/Dashboard.jsx": {
-    "file": "assets/Dashboard-DxkvDy8g.js",
+    "file": "assets/Dashboard-B6BrspS7.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Dashboard.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_card-DmfCpCqM.js",
-      "_createLucideIcon-zfhJLSHP.js",
-      "_layout-DWUCAO5c.js",
-      "_label-CgpcxaxB.js"
+      "_card-CudBIojk.js",
+      "_createLucideIcon-BrM2DDzr.js",
+      "_layout-BRksI4cZ.js",
+      "_apis-BzeLdW_T.js"
     ]
   },
   "resources/js/Pages/Paysprint/Recharge.jsx": {
-    "file": "assets/Recharge-_52aX_fW.js",
+    "file": "assets/Recharge-BTFIxTmp.js",
     "name": "Recharge",
     "src": "resources/js/Pages/Paysprint/Recharge.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-DWUCAO5c.js",
-      "_card-DmfCpCqM.js",
-      "_label-CgpcxaxB.js",
-      "_apis-CSkXTLdj.js",
-      "_createLucideIcon-zfhJLSHP.js"
+      "_layout-BRksI4cZ.js",
+      "_card-CudBIojk.js",
+      "_apis-BzeLdW_T.js",
+      "_createLucideIcon-BrM2DDzr.js"
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-DdCr8see.js",
+    "file": "assets/app-B6LG9V_e.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
