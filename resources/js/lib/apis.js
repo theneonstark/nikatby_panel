@@ -61,3 +61,13 @@ export const getOperators = async () => {
         throw err;
     }
 }
+
+export const doRecharge = async (data) => {
+    try{
+        const res = await axios.post('/recharge/dorecharge', data);
+        return res;
+    }catch(err){
+        console.error('Something went wrong to Recharge', err);
+        throw err;
+    }
+}

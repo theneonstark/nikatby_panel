@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Smartphone, Tv, Wifi, Zap } from "lucide-react"
+import { doRecharge } from "@/lib/apis"
+import { useState } from "react"
 
 // const rechargeTypes = [
 //   { icon: Smartphone, title: "Mobile Recharge", description: "Prepaid mobile recharge" },
@@ -23,6 +25,33 @@ const recentRecharges = [
 ]
 
 export function RechargeContent({operators}) {
+  const [mobile, setMobile] = useState("");
+  const [operator, setOperator] = useState("");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRecharge = async () => {
+    if (!mobile || !operator || !amount) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await doRecharge({
+        canumber: mobile,
+        operator: operator,
+        amount: amount,
+      })
+      console.log("Recharge Response:", response.data);
+      alert("Recharge request sent successfully!");
+    } catch (error) {
+      console.error("Recharge error:", error);
+      alert("Something went wrong while processing your recharge.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -70,11 +99,17 @@ export function RechargeContent({operators}) {
               <TabsContent value="mobile" className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="mobile">Mobile Number</Label>
-                  <Input id="mobile" placeholder="Enter mobile number" />
+                  <Input
+                    id="mobile"
+                    placeholder="Enter mobile number"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                  />
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="operator">Operator</Label>
-                  <Select>
+                  <Select onValueChange={(value) => setOperator(value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select operator" />
                     </SelectTrigger>
@@ -93,11 +128,20 @@ export function RechargeContent({operators}) {
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="dth-amount">Amount</Label>
-                  <Input id="dth-amount" placeholder="Enter amount" />
+                  <Input
+                    id="dth-amount"
+                    placeholder="Enter amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
                 </div>
-                <Button className="w-full">Recharge Now</Button>
+
+                <Button className="w-full" onClick={handleRecharge} disabled={loading}>
+                  {loading ? "Processing..." : "Recharge Now"}
+                </Button>
               </TabsContent>
               {/* <TabsContent value="dth" className="space-y-4">
                 <div className="space-y-2">
