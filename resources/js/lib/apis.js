@@ -52,6 +52,16 @@ export const fetchPayableAmount = async (data) => {
     }
 };
 
+export const payamount = async (data) => {
+    try{
+        const response = await axios.post('/bbps/billpayment', data)
+        return response;
+    }catch(err){
+        console.log('Error in payment', err);
+        throw err;
+    }
+}
+
 export const getOperators = async () => {
     try{
         const res = await axios.get('/recharge/operator');
