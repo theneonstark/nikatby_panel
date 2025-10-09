@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Layout from "../layout"
-import { fetchBiller, fetchPayableAmount } from "@/lib/apis"
+import { fetchBiller, fetchPayableAmount, payamount } from "@/lib/apis"
 import ProvidersList from "./ProvidersList"
 import BillDetails from "./BillDetails"
 import RecentBills from "./RecentBills"
@@ -56,7 +56,8 @@ export default function BillCategory({ list, title }) {
     setIsPaying(true)
     setPaymentError("")
     try {
-      console.log("Payment success")
+      const res = await payamount();
+      console.log("Payment success", res)
       setPaymentSuccess(true)
       setTimeout(() => {
         setShowPayModal(false)

@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Smartphone, Tv, Wifi, Zap } from "lucide-react"
 import { doRecharge } from "@/lib/apis"
 import { useState } from "react"
+import toast, { ToastBar, Toaster, ToastIcon } from "react-hot-toast"
 
 // const rechargeTypes = [
 //   { icon: Smartphone, title: "Mobile Recharge", description: "Prepaid mobile recharge" },
@@ -26,7 +27,7 @@ const recentRecharges = [
 
 export function RechargeContent({operators}) {
   const [mobile, setMobile] = useState("");
-  const [operator, setOperator] = useState("");
+  const [operator, setOperator] = useState("11");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -43,11 +44,15 @@ export function RechargeContent({operators}) {
         operator: operator,
         amount: amount,
       })
-      console.log("Recharge Response:", response.data);
-      alert("Recharge request sent successfully!");
+      console.log("Recharge Response:", response?.data?.data?.status);
+      
     } catch (error) {
       console.error("Recharge error:", error);
-      alert("Something went wrong while processing your recharge.");
+      if(error?.response?.status == 403){
+        toast.error(error?.response?.data?.message)
+      }else{
+        toast.error("Internal Server Error")
+      }
     } finally {
       setLoading(false);
     }
@@ -223,6 +228,7 @@ export function RechargeContent({operators}) {
           </CardContent>
         </Card>
       </div>
+      <Toaster/>
     </motion.div>
   )
 }
