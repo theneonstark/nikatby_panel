@@ -182,12 +182,12 @@ class BbpsController
             ]);
 
              response($fetchdata, 200);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => $e
-        //     ]);
-        // }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e
+            ]);
+        }
     }
 
     public function paybill(Request $request)
