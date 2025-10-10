@@ -52,19 +52,29 @@ export default function BillCategory({ list, title }) {
       const payload = {
         billerId: billerId,
         params: paramValues,
-      }
+      };
 
-      const response = await fetchPayableAmount(payload)
+      const response = await fetchPayableAmount(payload);
+
+      console.log("Fetched Payable Response:", response?.data);
 
       if (response?.data?.billData) {
-        setPayableData(response.data.billData)
+        const billData = response.data.billData;
+        const requestId = response?.data?.requestId || null;
+
+        // ✅ Merge requestId with billData
+        setPayableData({
+          ...billData,
+          requestId, // ensure requestId stays with billData
+        });
       } else {
-        console.error("Unexpected API response:", response)
+        console.error("Unexpected API response:", response);
       }
     } catch (error) {
-      console.error("Error fetching payable data:", error)
+      console.error("Error fetching payable data:", error);
     }
-  }
+  };
+
 
   // ✅ Payment confirm
   const handlePayment = async () => {
