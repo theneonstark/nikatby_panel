@@ -188,120 +188,62 @@ class BbpsController
         }
     }
 
-    public function billPayment(Request $request)
-    {
+
+    public function billPayment(Request $request){
         try {
-            $user = Auth::user();
-            // dd($user->mobile_number);
-            $key = '2940CB60C489CEA1AD49AC96BBDC6310';
-            $url = 'https://api.billavenue.com/billpay/extBillPayCntrl/billPayRequest/xml';
-            $data = $request->all();
-            // Step 1: Extract and normalize input
-            $inputs = $data['fetchedBill']['inputParams']['input'] ?? [];
-            $billAmount = ($data['fetchedBill']['billerResponse']['billAmount'] / 100);
-            // $currentDebitBalance = DebitBalance::where('user_id', $user->id)->first();
-            // if (!$currentDebitBalance || $currentDebitBalance->balance < $billAmount) {
-            //     // dd($currentDebitBalance->balance);
-            //     return response()->json([
-            //         'status' => false,
-            //         'errorMsg' => 'Insufficient balance. Please top up your account.'
-            //     ]);
-            // }
-            // $currentDebitBalance->balance -= $billAmount;
-            // $currentDebitBalance->save();
-            // dd($currentDebitBalance->balance);
-            $billDate = $data['fetchedBill']['billerResponse']['billDate'];
-            $billNumber = $data['fetchedBill']['billerResponse']['billNumber'];
-            $billPeriod = $data['fetchedBill']['billerResponse']['billPeriod'];
-            $customerName = $data['fetchedBill']['billerResponse']['customerName'];
-            $dueDate = $data['fetchedBill']['billerResponse']['dueDate'];
-            $requestId = $data['requestId'];
-            // dd($inputs);
+             $user = Auth::user();
+        $data = $request->all();
 
-            // Ensure $inputs is always an array of parameters
-            if (!is_array($inputs) || empty($inputs)) {
-                $inputs = []; // Handle case where input is null or not an array
-            } elseif (isset($inputs['paramName'])) {
-                // If $inputs is a single associative array (single parameter), wrap it in an array
-                $inputs = [$inputs];
-            }
+        // Extract main fields from JSON
+        $inputs         = $data['inputParams']['input'] ?? [];
+        $additionalInfo = $data['additionalInfo']['info'] ?? [];
+        $params         = $data['params'] ?? [];
+        $billAmount     = $data['amount'] ?? '0.00';
+        $billerId       = $data['billerId'] ?? '';
+        $requestId      = $data['requestId'] ?? '';
 
-            // Step 2: Initialize XML string
-            $test = '';
-            // Step 3: Loop through inputs and build XML
-            foreach ($inputs as $input) {
-                // Ensure paramName and paramValue exist, default to empty string if not
-                $paramName = $input['paramName'] ?? '';
-                $paramValue = $input['paramValue'] ?? '';
+        // Normalize inputs
+        if (isset($inputs['paramName'])) {
+            $inputs = [$inputs];
+        }
+        $inputXml = '';
+        foreach ($inputs as $input) {
+            $paramName  = $input['paramName'] ?? '';
+            $paramValue = $input['paramValue'] ?? '';
+            $inputXml  .= '<input><paramName>' . htmlspecialchars($paramName) . '</paramName><paramValue>' . htmlspecialchars($paramValue) . '</paramValue></input>';
+        }
 
-                // Log for debugging
-                \Log::info("Name: $paramName | Value: $paramValue");
+        // Normalize additionalInfo
+        if (isset($additionalInfo['infoName'])) {
+            $additionalInfo = [$additionalInfo];
+        }
+        $infoXml = '';
+        foreach ($additionalInfo as $info) {
+            $infoName  = $info['infoName'] ?? '';
+            $infoValue = $info['infoValue'] ?? '';
+            $infoXml  .= '<info><infoName>' . htmlspecialchars($infoName) . '</infoName><infoValue>' . htmlspecialchars($infoValue) . '</infoValue></info>';
+        }
 
-                // Build XML structure
-                $test .= '<input>';
-                $test .= '<paramName>' . $paramName . '</paramName>';
-                $test .= '<paramValue>' . $paramValue . '</paramValue>';
-                $test .= '</input>';
-            }
-            // dd($test); 
-            $additionalInfo = $data['fetchedBill']['additionalInfo']['info'] ?? [];
-            if (!is_array($additionalInfo) || empty($additionalInfo)) {
-                $additionalInfo = []; // Handle case where input is null or not an array
-            } elseif (isset($additionalInfo['infoName'])) {
-                // If $inputs is a single associative array (single parameter), wrap it in an array
-                $additionalInfo = [$additionalInfo];
-            }
-            // dd($additionalInfo);
-            $info = '';
-            foreach ($additionalInfo as $paramName) {
-                $paramNam = $paramName['infoName'] ?? '';
-                $paramValue = $paramName['infoValue'] ?? '';
-                // You can use paramName and paramValue here
-                \Log::info("Field Name: $paramNam | Value: $paramValue");
+        // Params (Vehicle Number etc.)
+        $paramsXml = '';
+        foreach ($params as $key => $value) {
+            $paramsXml .= '<param><paramName>' . htmlspecialchars($key) . '</paramName><paramValue>' . htmlspecialchars($value) . '</paramValue></param>';
+        }
 
-                // Append to the $test variable
-                $info .= '<info>';
-                $info .= '<infoName>' . $paramNam . '</infoName>';
-                $info .= '<infoValue>' . $paramValue . '</infoValue>';
-                $info .= '</info>';
-            }
-            // dd($info);
-            $options = $data['fetchedBill']['option'] ?? [];
-            if (!is_array($options) || empty($options)) {
-                $options = []; // Handle case where input is null or not an array
-            } elseif (isset($options['infoName'])) {
-                // If $inputs is a single associative array (single parameter), wrap it in an array
-                $options = [$options];
-            }
-            // dd($options);
-
-            $option = '';
-            foreach ($options as $option) {
-                $paramNam = $option['infoName'] ?? '';
-                $paramValue = $option['infoValue'] ?? '';
-                // You can use paramName and paramValue here
-                \Log::info("Field Name: $paramName | Value: $paramValue");
-
-                // Append to the $test variable
-                $option .= '<option>';
-                $option .= '<amountName>' . $paramName . '</amountName>';
-                $option .= '<amountValue>' . $paramValue . '</amountValue>';
-                $option .= '</option>';
-            }
-            // dd($option);
-
-            // for option
-            // <option><amountName>Late Payment Fee</amountName><amountValue>40</amountValue></option><option><amountName>Fixed Charges</amountName><amountValue>50</amountValue></option><option><amountName>Additional Charges</amountName><amountValue>60</amountValue></option>
-
-
-            // for info
-            // <info><infoName>a</infoName><infoValue>10</infoValue></info><info><infoName>a b</infoName><infoValue>20</infoValue></info><info><infoName>a b c</infoName><infoValue>30</infoValue></info><info><infoName>a b c d</infoName><infoValue>40</infoValue></info>
-
-
-            // <input><paramName>a</paramName><paramValue>10</paramValue></input><input><paramName>a b</paramName><paramValue>20</paramValue></input><input><paramName>a b c</paramName><paramValue>30</paramValue></input><input><paramName>a b c d</paramName><paramValue>40</paramValue></input><input><paramName>a b c d e</paramName><paramValue>50</paramValue></input>
-
-
-            $xml = '<?xml version="1.0" encoding="UTF-8"?><billPaymentRequest><agentId>CC01RP16AGTU00000001</agentId><billerAdhoc>true</billerAdhoc><agentDeviceInfo><ip>103.250.165.8</ip><initChannel>AGT</initChannel><mac>01-23-45-67-89-ab</mac></agentDeviceInfo><customerInfo><customerMobile>9898990084</customerMobile><customerEmail></customerEmail><customerAdhaar></customerAdhaar><customerPan></customerPan></customerInfo><billerId>' . $data['billerId'] . '</billerId><inputParams>' . $test . '</inputParams><billerResponse><billAmount>' . $billAmount . '</billAmount><billDate>' . $billDate . '</billDate><billNumber>' . $billNumber . '</billNumber><billPeriod>' . $billPeriod . '</billPeriod><customerName>' . $customerName . '</customerName><dueDate>' . $dueDate . '</dueDate><amountOptions>' . $option . '</amountOptions></billerResponse><additionalInfo>' . $info . '</additionalInfo><amountInfo><amount></amount><currency></currency><custConvFee>0</custConvFee><amountTags></amountTags></amountInfo><paymentMethod><paymentMode>Cash</paymentMode><quickPay>N</quickPay><splitPay>N</splitPay></paymentMethod><paymentInfo><info><infoName>Remarks</infoName><infoValue>2</infoValue></info></paymentInfo></billPaymentRequest>';
+        // Generate XML in single line
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><billPaymentRequest>'
+             . '<agentId>CC01RP16AGTU00000001</agentId>'
+             . '<billerAdhoc>true</billerAdhoc>'
+             . '<agentDeviceInfo><ip>103.250.165.8</ip><initChannel>AGT</initChannel><mac>01-23-45-67-89-ab</mac></agentDeviceInfo>'
+             . '<customerInfo><customerMobile>' . htmlspecialchars($user->mobile_number) . '</customerMobile><customerEmail></customerEmail><customerAdhaar></customerAdhaar><customerPan></customerPan></customerInfo>'
+             . '<billerId>' . htmlspecialchars($billerId) . '</billerId>'
+             . '<inputParams>' . $inputXml . '</inputParams>'
+             . '<billerResponse><billAmount>' . htmlspecialchars($billAmount) . '</billAmount><amountOptions>' . $paramsXml . '</amountOptions></billerResponse>'
+             . '<additionalInfo>' . $infoXml . '</additionalInfo>'
+             . '<amountInfo><amount>' . htmlspecialchars($billAmount) . '</amount><currency></currency><custConvFee>0</custConvFee><amountTags></amountTags></amountInfo>'
+             . '<paymentMethod><paymentMode>Cash</paymentMode><quickPay>N</quickPay><splitPay>N</splitPay></paymentMethod>'
+             . '<paymentInfo><info><infoName>Remarks</infoName><infoValue>2</infoValue></info></paymentInfo>'
+             . '</billPaymentRequest>';
             // dd($xml);
 
             $encRequest = \CJS::encrypt($xml, $key);
@@ -360,7 +302,7 @@ class BbpsController
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Ip Not Whitelisted."
+                'message' => "Something went wrong in payment"
             ]);
         }
     }
