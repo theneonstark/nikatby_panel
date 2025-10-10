@@ -85,6 +85,7 @@ export default function BillCategory({ list, title }) {
         amount: payableData?.billerResponse?.billAmount
           ? payableData.billerResponse.billAmount
           : "0.00",
+        requestId: payableData?.requestId || "N/A",
       };
 
       console.log("Payment Payload:", payload);
