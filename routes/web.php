@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/biller', [BbpsController::class, 'billerId']);
         Route::post('/fetchbill', [BbpsController::class, 'fetchBill']);
         Route::post('/paybill', [BbpsController::class, 'paybill']);
-        Route::post('/billPayment', [BbpsController::class, 'billPayment']);
+        Route::post('/billpayment', [BbpsController::class, 'billPayment']);
     
 
 

@@ -188,7 +188,7 @@ class BbpsController
         }
     }
 
-    public function paybill(Request $request)
+    public function billPayment(Request $request)
     {
         try {
             $user = Auth::user();
