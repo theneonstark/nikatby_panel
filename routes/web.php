@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/biller', [BbpsController::class, 'billerId']);
         Route::post('/fetchbill', [BbpsController::class, 'fetchBill']);
         Route::post('/paybill', [BbpsController::class, 'paybill']);
+        Route::post('/billPayment', [BbpsController::class, 'billPayment']);
     
 
 
@@ -46,7 +47,6 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::get('/category/{category}/state/{state}/city/{city}/operators', [BbpsController::class, 'getOperatorsByStateAndCity'])
     //     ->where(['category' => '.*', 'state' => '.*', 'city' => '.*']);
     
-    // Route::post('/billPayment', [BbpsController::class, 'billPayment']);
     // Route::post('/transactionStatus', [BbpsController::class, 'transactionStatus']);
     // Route::get('/complaintRegistration', [BbpsController::class, 'complaintRegistration']);
     // Route::post('/previousRegisteredComplaint', [BbpsController::class, 'previousRegisteredComplaint']);
