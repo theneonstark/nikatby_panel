@@ -191,59 +191,48 @@ class BbpsController
 
     public function billPayment(Request $request){
         try {
-             $user = Auth::user();
-        $data = $request->all();
+            $user = Auth::user();
+            $data = $request->all();
 
-        // Extract main fields from JSON
-        $inputs         = $data['inputParams']['input'] ?? [];
-        $additionalInfo = $data['additionalInfo']['info'] ?? [];
-        $params         = $data['params'] ?? [];
-        $billAmount     = $data['amount'] ?? '0.00';
-        $billerId       = $data['billerId'] ?? '';
-        $requestId      = $data['requestId'] ?? '';
+            // Extract main fields from JSON
+            $inputs         = $data['inputParams']['input'] ?? [];
+            $additionalInfo = $data['additionalInfo']['info'] ?? [];
+            $params         = $data['params'] ?? [];
+            $billAmount     = $data['amount'] ?? '0.00';
+            $billerId       = $data['billerId'] ?? '';
+            $requestId      = $data['requestId'] ?? '';
 
-        // Normalize inputs
-        if (isset($inputs['paramName'])) {
-            $inputs = [$inputs];
-        }
-        $inputXml = '';
-        foreach ($inputs as $input) {
-            $paramName  = $input['paramName'] ?? '';
-            $paramValue = $input['paramValue'] ?? '';
-            $inputXml  .= '<input><paramName>' . htmlspecialchars($paramName) . '</paramName><paramValue>' . htmlspecialchars($paramValue) . '</paramValue></input>';
-        }
+            // Normalize inputs
+            if (isset($inputs['paramName'])) {
+                $inputs = [$inputs];
+            }
+            $inputXml = '';
+            foreach ($inputs as $input) {
+                $paramName  = $input['paramName'] ?? '';
+                $paramValue = $input['paramValue'] ?? '';
+                $inputXml  .= '<input><paramName>' . htmlspecialchars($paramName) . '</paramName><paramValue>' . htmlspecialchars($paramValue) . '</paramValue></input>';
+            }
 
-        // Normalize additionalInfo
-        if (isset($additionalInfo['infoName'])) {
-            $additionalInfo = [$additionalInfo];
-        }
-        $infoXml = '';
-        foreach ($additionalInfo as $info) {
-            $infoName  = $info['infoName'] ?? '';
-            $infoValue = $info['infoValue'] ?? '';
-            $infoXml  .= '<info><infoName>' . htmlspecialchars($infoName) . '</infoName><infoValue>' . htmlspecialchars($infoValue) . '</infoValue></info>';
-        }
+            // Normalize additionalInfo
+            if (isset($additionalInfo['infoName'])) {
+                $additionalInfo = [$additionalInfo];
+            }
+            $infoXml = '';
+            foreach ($additionalInfo as $info) {
+                $infoName  = $info['infoName'] ?? '';
+                $infoValue = $info['infoValue'] ?? '';
+                $infoXml  .= '<info><infoName>' . htmlspecialchars($infoName) . '</infoName><infoValue>' . htmlspecialchars($infoValue) . '</infoValue></info>';
+            }
 
-        // Params (Vehicle Number etc.)
-        $paramsXml = '';
-        foreach ($params as $key => $value) {
-            $paramsXml .= '<param><paramName>' . htmlspecialchars($key) . '</paramName><paramValue>' . htmlspecialchars($value) . '</paramValue></param>';
-        }
+            // Params (Vehicle Number etc.)
+            $paramsXml = '';
+            foreach ($params as $key => $value) {
+                $paramsXml .= '<param><paramName>' . htmlspecialchars($key) . '</paramName><paramValue>' . htmlspecialchars($value) . '</paramValue></param>';
+            }
 
-        // Generate XML in single line
-        $xml = '<?xml version="1.0" encoding="UTF-8"?><billPaymentRequest>'
-             . '<agentId>CC01RP16AGTU00000001</agentId>'
-             . '<billerAdhoc>true</billerAdhoc>'
-             . '<agentDeviceInfo><ip>103.250.165.8</ip><initChannel>AGT</initChannel><mac>01-23-45-67-89-ab</mac></agentDeviceInfo>'
-             . '<customerInfo><customerMobile>' . htmlspecialchars($user->mobile_number) . '</customerMobile><customerEmail></customerEmail><customerAdhaar></customerAdhaar><customerPan></customerPan></customerInfo>'
-             . '<billerId>' . htmlspecialchars($billerId) . '</billerId>'
-             . '<inputParams>' . $inputXml . '</inputParams>'
-             . '<billerResponse><billAmount>' . htmlspecialchars($billAmount) . '</billAmount><amountOptions>' . $paramsXml . '</amountOptions></billerResponse>'
-             . '<additionalInfo>' . $infoXml . '</additionalInfo>'
-             . '<amountInfo><amount>' . htmlspecialchars($billAmount) . '</amount><currency></currency><custConvFee>0</custConvFee><amountTags></amountTags></amountInfo>'
-             . '<paymentMethod><paymentMode>Cash</paymentMode><quickPay>N</quickPay><splitPay>N</splitPay></paymentMethod>'
-             . '<paymentInfo><info><infoName>Remarks</infoName><infoValue>2</infoValue></info></paymentInfo>'
-             . '</billPaymentRequest>';
+            // Generate XML in single line
+            $xml = $xml = '<?xml version="1.0" encoding="UTF-8"?><billPaymentRequest><agentId>CC01RP16AGTU00000001</agentId><billerAdhoc>true</billerAdhoc><agentDeviceInfo><ip>103.250.165.8</ip><initChannel>AGT</initChannel><mac>01-23-45-67-89-ab</mac></agentDeviceInfo><customerInfo><customerMobile>' . htmlspecialchars($user->mobile_number) . '</customerMobile><customerEmail></customerEmail><customerAdhaar></customerAdhaar><customerPan></customerPan></customerInfo><billerId>' . htmlspecialchars($billerId) . '</billerId><inputParams>' . $inputXml . '</inputParams><billerResponse><billAmount>' . htmlspecialchars($billAmount) . '</billAmount><amountOptions>' . $paramsXml . '</amountOptions></billerResponse><additionalInfo>' . $infoXml . '</additionalInfo><amountInfo><amount>' . htmlspecialchars($billAmount) . '</amount><currency></currency><custConvFee>0</custConvFee><amountTags></amountTags></amountInfo><paymentMethod><paymentMode>Cash</paymentMode><quickPay>N</quickPay><splitPay>N</splitPay></paymentMethod><paymentInfo><info><infoName>Remarks</infoName><infoValue>2</infoValue></info></paymentInfo></billPaymentRequest>';
+
             // dd($xml);
 
             $encRequest = \CJS::encrypt($xml, $key);
