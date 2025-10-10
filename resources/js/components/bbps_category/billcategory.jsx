@@ -74,18 +74,23 @@ export default function BillCategory({ list, title }) {
     setPaymentError("");
 
     try {
-      // Prepare payload
+      // ✅ Step 1: Clone all data except 3 unwanted fields
+      const { billerResponse, fetchedBill, extraInfo, ...filteredData } = payableData;
+
+      // ✅ Step 2: Prepare payload
       const payload = {
+        ...filteredData, // sab kuch jaye except those 3
         billerId: selectedBillData?.billerId,
-        params: inputValues, // inputValues contains all paramName: value pairs
+        params: inputValues, // all paramName: value pairs
         amount: payableData?.billerResponse?.billAmount
-          ? (payableData.billerResponse.billAmount)
+          ? payableData.billerResponse.billAmount
           : "0.00",
       };
 
       console.log("Payment Payload:", payload);
 
-      const res = await payamount(payload); // send payload to payment API
+      // ✅ Step 3: Send to API
+      const res = await payamount(payload);
 
       console.log("Payment success", res);
       setPaymentSuccess(true);
@@ -100,6 +105,7 @@ export default function BillCategory({ list, title }) {
       setIsPaying(false);
     }
   };
+
 
   return (
     <Layout>
