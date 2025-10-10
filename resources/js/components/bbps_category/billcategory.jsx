@@ -17,18 +17,20 @@ const recentBills = [
 ]
 
 const stats = {
-    totalPayments: "$12,450",
-    billsPaid: 156,
-    pendingBills: 23,
-    overdue: 8,
-  }
+  totalPayments: "$12,450",
+  billsPaid: 156,
+  pendingBills: 23,
+  overdue: 8,
+}
 
 export default function BillCategory({ list, title }) {
   const [searchProvider, setSearchProvider] = useState("")
   const [searchBill, setSearchBill] = useState("")
   const [selectedBillData, setSelectedBillData] = useState(null)
   const [view, setView] = useState("providers")
-  const [inputValue, setInputValue] = useState("")
+
+  // ✅ handle multiple input values dynamically
+  const [inputValues, setInputValues] = useState({})
   const [payableData, setPayableData] = useState(null)
 
   // Payment states
@@ -45,9 +47,12 @@ export default function BillCategory({ list, title }) {
   }
 
   // ✅ Fetch payable amount
-  const handleFetchPayable = async (billerId, paramName, paramValue) => {
-    const response = await fetchPayableAmount({ billerId, paramName, paramValue })
-    setPayableData(response.data.billData)
+  const handleFetchPayable = async (billerId, paramValues) => {
+    // paramValues will be an object: { paramName1: value1, paramName2: value2 }
+    for (const [paramName, paramValue] of Object.entries(paramValues)) {
+      const response = await fetchPayableAmount({ billerId, paramName, paramValue })
+      setPayableData(response.data.billData)
+    }
   }
 
   // ✅ Payment confirm
@@ -56,7 +61,7 @@ export default function BillCategory({ list, title }) {
     setIsPaying(true)
     setPaymentError("")
     try {
-      const res = await payamount();
+      const res = await payamount()
       console.log("Payment success", res)
       setPaymentSuccess(true)
       setTimeout(() => {
@@ -71,54 +76,67 @@ export default function BillCategory({ list, title }) {
 
   return (
     <Layout>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-4"
+      >
         <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">{title}</h1>
-        <p className="text-muted-foreground">Pay bill for various providers</p>
-      </div>
-      <SummaryCards stats={stats} />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {view === "providers" ? (
+          <h1 className="text-3xl font-bold text-foreground mb-2">{title}</h1>
+          <p className="text-muted-foreground">Pay bill for various providers</p>
+        </div>
+
+        <SummaryCards stats={stats} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {view === "providers" ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {view === "providers" ? `Available ${title} Providers` : "Bill Details"}
+                </CardTitle>
+                <CardDescription>
+                  {view === "providers"
+                    ? "List of supported providers"
+                    : "Details of the selected provider's bill"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProvidersList
+                  providers={list}
+                  searchProvider={searchProvider}
+                  setSearchProvider={setSearchProvider}
+                  onSelectProvider={handleFetchBiller}
+                />
+              </CardContent>
+            </Card>
+          ) : (
+            <BillDetails
+              selectedBillData={selectedBillData}
+              inputValues={inputValues}
+              setInputValues={setInputValues}
+              payableData={payableData}
+              onBack={() => setView("providers")}
+              onFetchPayable={(billerId, values) => handleFetchPayable(billerId, values)}
+              onPay={() => setShowPayModal(true)}
+            />
+          )}
+
           <Card>
             <CardHeader>
-              <CardTitle>
-                {view === "providers" ? `Available ${title} Providers` : "Bill Details"}
-              </CardTitle>
-              <CardDescription>
-                {view === "providers" ? "List of supported providers" : "Details of the selected provider's bill"}
-              </CardDescription>
+              <CardTitle>Recent Bill Payments</CardTitle>
+              <CardDescription>Your recent bill payments</CardDescription>
             </CardHeader>
             <CardContent>
-            <ProvidersList
-              providers={list}
-              searchProvider={searchProvider}
-              setSearchProvider={setSearchProvider}
-              onSelectProvider={handleFetchBiller}
-            />
-            </CardContent>
-          </Card>
-        ) : (
-          <BillDetails
-            selectedBillData={selectedBillData}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            payableData={payableData}
-            onBack={() => setView("providers")}
-            onFetchPayable={handleFetchPayable}
-            onPay={() => setShowPayModal(true)}
-          />
-        )}
-          <Card>
-            <CardHeader>
-                  <CardTitle>Recent Bill Payments</CardTitle>
-                  <CardDescription>Your recent bill payments</CardDescription>
-                </CardHeader>
-            <CardContent>
-              <RecentBills bills={recentBills} searchBill={searchBill} setSearchBill={setSearchBill} />
+              <RecentBills
+                bills={recentBills}
+                searchBill={searchBill}
+                setSearchBill={setSearchBill}
+              />
             </CardContent>
           </Card>
         </div>
-
 
         <PayDialog
           open={showPayModal}
@@ -130,11 +148,12 @@ export default function BillCategory({ list, title }) {
           onConfirmPay={handlePayment}
         />
       </motion.div>
-      <div className='flex items-center justify-center gap-2 opacity-70 mt-4'>
-          <img src="/company/logo.png" alt="" className='w-20 h-full'/>
-          <p className='text-xl text-gray-500 font-extralight'>|</p>
-          <img src="/company/bharatconnect.png" alt="" className='w-16 h-full'/>
-        </div>
+
+      <div className="flex items-center justify-center gap-2 opacity-70 mt-4">
+        <img src="/company/logo.png" alt="" className="w-20 h-full" />
+        <p className="text-xl text-gray-500 font-extralight">|</p>
+        <img src="/company/bharatconnect.png" alt="" className="w-16 h-full" />
+      </div>
     </Layout>
   )
 }
