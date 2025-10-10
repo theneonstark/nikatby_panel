@@ -1,112 +1,112 @@
 {
-  "_apis-BzeLdW_T.js": {
-    "file": "assets/apis-BzeLdW_T.js",
+  "_apis-CxF9w3_d.js": {
+    "file": "assets/apis-CxF9w3_d.js",
     "name": "apis",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_card-CudBIojk.js": {
-    "file": "assets/card-CudBIojk.js",
-    "name": "card",
-    "imports": [
-      "resources/js/app.jsx",
-      "_apis-BzeLdW_T.js"
-    ]
-  },
-  "_createLucideIcon-BrM2DDzr.js": {
-    "file": "assets/createLucideIcon-BrM2DDzr.js",
+  "_createLucideIcon-CoWhN5UM.js": {
+    "file": "assets/createLucideIcon-CoWhN5UM.js",
     "name": "createLucideIcon",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_layout-BRksI4cZ.js": {
-    "file": "assets/layout-BRksI4cZ.js",
+  "_index-BFZpAC4Q.js": {
+    "file": "assets/index-BFZpAC4Q.js",
+    "name": "index",
+    "imports": [
+      "resources/js/app.jsx",
+      "_apis-CxF9w3_d.js"
+    ]
+  },
+  "_layout-NFj4j4Yo.js": {
+    "file": "assets/layout-NFj4j4Yo.js",
     "name": "layout",
     "imports": [
       "resources/js/app.jsx",
-      "_apis-BzeLdW_T.js",
-      "_createLucideIcon-BrM2DDzr.js",
-      "_card-CudBIojk.js"
+      "_apis-CxF9w3_d.js",
+      "_createLucideIcon-CoWhN5UM.js",
+      "_index-BFZpAC4Q.js"
     ]
   },
   "resources/js/Pages/Auth/login.jsx": {
-    "file": "assets/login-CVvW-usX.js",
+    "file": "assets/login-Bt_Y4Q8e.js",
     "name": "login",
     "src": "resources/js/Pages/Auth/login.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_apis-BzeLdW_T.js",
-      "_card-CudBIojk.js"
+      "_apis-CxF9w3_d.js",
+      "_index-BFZpAC4Q.js"
     ]
   },
   "resources/js/Pages/Auth/signup.jsx": {
-    "file": "assets/signup-CtZyGv0-.js",
+    "file": "assets/signup-D6lHvNvQ.js",
     "name": "signup",
     "src": "resources/js/Pages/Auth/signup.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_apis-BzeLdW_T.js",
-      "_createLucideIcon-BrM2DDzr.js"
+      "_apis-CxF9w3_d.js",
+      "_createLucideIcon-CoWhN5UM.js"
     ]
   },
   "resources/js/Pages/BBPS/category.jsx": {
-    "file": "assets/category-N9TI69iL.js",
+    "file": "assets/category-Ckm5wC-h.js",
     "name": "category",
     "src": "resources/js/Pages/BBPS/category.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-BRksI4cZ.js",
-      "_apis-BzeLdW_T.js",
-      "_createLucideIcon-BrM2DDzr.js",
-      "_card-CudBIojk.js"
+      "_layout-NFj4j4Yo.js",
+      "_apis-CxF9w3_d.js",
+      "_createLucideIcon-CoWhN5UM.js",
+      "_index-BFZpAC4Q.js"
     ]
   },
   "resources/js/Pages/BBPS/services.jsx": {
-    "file": "assets/services-NdqOPLTk.js",
+    "file": "assets/services-B3MzXydH.js",
     "name": "services",
     "src": "resources/js/Pages/BBPS/services.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-BRksI4cZ.js",
-      "_card-CudBIojk.js",
-      "_apis-BzeLdW_T.js",
-      "_createLucideIcon-BrM2DDzr.js"
+      "_layout-NFj4j4Yo.js",
+      "_index-BFZpAC4Q.js",
+      "_apis-CxF9w3_d.js",
+      "_createLucideIcon-CoWhN5UM.js"
     ]
   },
   "resources/js/Pages/Dashboard.jsx": {
-    "file": "assets/Dashboard-B6BrspS7.js",
+    "file": "assets/Dashboard-CiXmqWub.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Dashboard.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_card-CudBIojk.js",
-      "_createLucideIcon-BrM2DDzr.js",
-      "_layout-BRksI4cZ.js",
-      "_apis-BzeLdW_T.js"
+      "_index-BFZpAC4Q.js",
+      "_createLucideIcon-CoWhN5UM.js",
+      "_layout-NFj4j4Yo.js",
+      "_apis-CxF9w3_d.js"
     ]
   },
   "resources/js/Pages/Paysprint/Recharge.jsx": {
-    "file": "assets/Recharge-BTFIxTmp.js",
+    "file": "assets/Recharge-BfPxlz3l.js",
     "name": "Recharge",
     "src": "resources/js/Pages/Paysprint/Recharge.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_layout-BRksI4cZ.js",
-      "_card-CudBIojk.js",
-      "_apis-BzeLdW_T.js",
-      "_createLucideIcon-BrM2DDzr.js"
+      "_layout-NFj4j4Yo.js",
+      "_index-BFZpAC4Q.js",
+      "_apis-CxF9w3_d.js",
+      "_createLucideIcon-CoWhN5UM.js"
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-B6LG9V_e.js",
+    "file": "assets/app-B8O7Edsa.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
