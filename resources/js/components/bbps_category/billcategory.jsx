@@ -49,16 +49,11 @@ export default function BillCategory({ list, title }) {
   // ✅ Fetch payable amount
   const handleFetchPayable = async (billerId, paramValues) => {
     try {
-      // paramValues example:
-      // { "Last 4 digits of Credit Card Number": "1234", "Registered Mobile Number": "9876543210" }
-
-      // Prepare final payload
       const payload = {
         billerId: billerId,
-        params: paramValues, // 👈 send all inputs together
+        params: paramValues,
       }
 
-      // Single API call — not multiple
       const response = await fetchPayableAmount(payload)
 
       if (response?.data?.billData) {
@@ -73,22 +68,35 @@ export default function BillCategory({ list, title }) {
 
   // ✅ Payment confirm
   const handlePayment = async () => {
-    if (!payableData?.billerResponse) return
-    setIsPaying(true)
-    setPaymentError("")
+    if (!payableData?.billerResponse) return;
+
+    setIsPaying(true);
+    setPaymentError("");
+
     try {
-      const res = await payamount()
-      console.log("Payment success", res)
-      setPaymentSuccess(true)
+      // Prepare payload
+      const payload = {
+        billerId: selectedBillData?.billerId,
+        params: inputValues, // inputValues contains all paramName: value pairs
+      };
+
+      console.log("Payment Payload:", payload);
+
+      const res = await payamount(payload); // send payload to payment API
+
+      console.log("Payment success", res);
+      setPaymentSuccess(true);
+
       setTimeout(() => {
-        setShowPayModal(false)
-      }, 2000)
+        setShowPayModal(false);
+      }, 2000);
     } catch (error) {
-      setPaymentError("Payment failed. Please try again.")
+      console.error("Payment error:", error);
+      setPaymentError("Payment failed. Please try again.");
     } finally {
-      setIsPaying(false)
+      setIsPaying(false);
     }
-  }
+  };
 
   return (
     <Layout>
