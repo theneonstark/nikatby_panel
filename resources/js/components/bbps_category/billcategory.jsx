@@ -48,10 +48,26 @@ export default function BillCategory({ list, title }) {
 
   // ✅ Fetch payable amount
   const handleFetchPayable = async (billerId, paramValues) => {
-    // paramValues will be an object: { paramName1: value1, paramName2: value2 }
-    for (const [paramName, paramValue] of Object.entries(paramValues)) {
-      const response = await fetchPayableAmount({ billerId, paramName, paramValue })
-      setPayableData(response.data.billData)
+    try {
+      // paramValues example:
+      // { "Last 4 digits of Credit Card Number": "1234", "Registered Mobile Number": "9876543210" }
+
+      // Prepare final payload
+      const payload = {
+        billerId: billerId,
+        params: paramValues, // 👈 send all inputs together
+      }
+
+      // Single API call — not multiple
+      const response = await fetchPayableAmount(payload)
+
+      if (response?.data?.billData) {
+        setPayableData(response.data.billData)
+      } else {
+        console.error("Unexpected API response:", response)
+      }
+    } catch (error) {
+      console.error("Error fetching payable data:", error)
     }
   }
 
