@@ -78,6 +78,9 @@ export default function BillCategory({ list, title }) {
       const payload = {
         billerId: selectedBillData?.billerId,
         params: inputValues, // inputValues contains all paramName: value pairs
+        amount: payableData?.billerResponse?.billAmount
+          ? (payableData.billerResponse.billAmount)
+          : "0.00",
       };
 
       console.log("Payment Payload:", payload);
