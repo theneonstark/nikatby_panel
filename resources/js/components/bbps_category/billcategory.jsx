@@ -41,9 +41,9 @@ export default function BillCategory({ list, title }) {
 
   // ✅ Fetch biller details
   const handleFetchBiller = async (billerName) => {
-    const response = await fetchBiller({ blr_name: billerName })
+    const response = await fetchBiller({ blr_name: billerName })    
     setSelectedBillData(response.data.billdata)
-    setView("billData")
+    setView("billData");
   }
 
   // ✅ Fetch payable amount
