@@ -241,7 +241,7 @@ class BbpsController
             // Generate XML in single line
             $xml = $xml = '<?xml version="1.0" encoding="UTF-8"?><billPaymentRequest><agentId>CC01RP16AGTU00000001</agentId><billerAdhoc>true</billerAdhoc><agentDeviceInfo><ip>103.250.165.8</ip><initChannel>AGT</initChannel><mac>01-23-45-67-89-ab</mac></agentDeviceInfo><customerInfo><customerMobile>9220480604</customerMobile><customerEmail></customerEmail><customerAdhaar></customerAdhaar><customerPan></customerPan></customerInfo><billerId>' . htmlspecialchars($billerId) . '</billerId><inputParams>' . $inputXml . '</inputParams><billerResponse><billAmount>' . htmlspecialchars($billAmount) . '</billAmount><billDate>' . $billDate . '</billDate><billNumber>' . $billNumber . '</billNumber><billPeriod>' . $billPeriod . '</billPeriod><customerName>' . $customerName . '</customerName><dueDate>' . $dueDate . '</dueDate><amountOptions>' . $paramsXml . '</amountOptions></billerResponse><additionalInfo>' . $infoXml . '</additionalInfo><amountInfo><amount>' . htmlspecialchars($billAmount) . '</amount><currency>356</currency><custConvFee>0</custConvFee><amountTags></amountTags></amountInfo><paymentMethod><paymentMode>Cash</paymentMode><quickPay>N</quickPay><splitPay>N</splitPay></paymentMethod><paymentInfo><info><infoName>Remarks</infoName><infoValue>2</infoValue></info></paymentInfo></billPaymentRequest>';
 
-            dd($xml);
+            // dd($xml);
 
             $encRequest = \CJS::encrypt($xml, $key);
             $parameter = [
