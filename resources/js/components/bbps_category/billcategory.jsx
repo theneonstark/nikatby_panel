@@ -47,75 +47,72 @@ export default function BillCategory({ list, title }) {
   }
 
   // ✅ Fetch payable amount
-  const handleFetchPayable = async (billerId, paramValues) => {
-    try {
-      const payload = {
-        billerId: billerId,
-        params: paramValues,
+const handleFetchPayable = async (billerId, paramValues) => {
+  try {
+    const payload = {
+      billerId: billerId,
+      params: paramValues,
+    };
+
+    const response = await fetchPayableAmount(payload);
+
+    console.log("Fetched Payable Response:", response?.data);
+
+    if (response?.data?.billData) {
+      // ✅ Pure response data + requestId store karna
+      const finalData = {
+        ...response.data.billData, // billData ke andar sab kuch
+        requestId: response?.data?.requestId || null,
       };
 
-      const response = await fetchPayableAmount(payload);
-
-      console.log("Fetched Payable Response:", response?.data);
-
-      if (response?.data?.billData) {
-        const billData = response.data.billData;
-        const requestId = response?.data?.requestId || null;
-
-        // ✅ Merge requestId with billData
-        setPayableData({
-          ...billData,
-          requestId, // ensure requestId stays with billData
-        });
-      } else {
-        console.error("Unexpected API response:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching payable data:", error);
+      setPayableData(finalData);
+    } else {
+      console.error("Unexpected API response:", response);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching payable data:", error);
+  }
+};
 
+// ✅ Payment confirm
+const handlePayment = async () => {
+  if (!payableData) return;
 
-  // ✅ Payment confirm
-  const handlePayment = async () => {
-    if (!payableData?.billerResponse) return;
+  setIsPaying(true);
+  setPaymentError("");
 
-    setIsPaying(true);
-    setPaymentError("");
+  try {
+    // ✅ Prepare payload with everything fetched earlier
+    const payload = {
+      ...payableData, // jitna fetch hua tha wo sab chalega
+      billerId: selectedBillData?.billerId,
+      params: inputValues, // latest input values bhi bhej de
+      amount:
+        payableData?.billerResponse?.billAmount ||
+        payableData?.billData?.billerResponse?.billAmount ||
+        "0.00",
+      requestId: payableData?.requestId || "N/A",
+    };
 
-    try {
-      // ✅ Step 1: Clone all data except 3 unwanted fields
-      const { billerResponse, fetchedBill, extraInfo, ...filteredData } = payableData;
+    console.log("✅ Payment Payload:", payload);
 
-      // ✅ Step 2: Prepare payload
-      const payload = {
-        ...filteredData, // sab kuch jaye except those 3
-        billerId: selectedBillData?.billerId,
-        params: inputValues, // all paramName: value pairs
-        amount: payableData?.billerResponse?.billAmount
-          ? payableData.billerResponse.billAmount
-          : "0.00",
-        requestId: payableData?.requestId || "N/A",
-      };
+    // ✅ Send to API
+    const res = await payamount(payload);
 
-      console.log("Payment Payload:", payload);
+    console.log("💸 Payment success", res);
+    setPaymentSuccess(true);
 
-      // ✅ Step 3: Send to API
-      const res = await payamount(payload);
+    setTimeout(() => {
+      setShowPayModal(false);
+    }, 2000);
+  } catch (error) {
+    console.error("❌ Payment error:", error);
+    setPaymentError("Payment failed. Please try again.");
+  } finally {
+    setIsPaying(false);
+  }
+};
 
-      console.log("Payment success", res);
-      setPaymentSuccess(true);
-
-      setTimeout(() => {
-        setShowPayModal(false);
-      }, 2000);
-    } catch (error) {
-      console.error("Payment error:", error);
-      setPaymentError("Payment failed. Please try again.");
-    } finally {
-      setIsPaying(false);
-    }
-  };
 
 
   return (
